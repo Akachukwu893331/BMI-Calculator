@@ -16,15 +16,15 @@ export default function Footer() {
               Your comprehensive health tracking and BMI calculation tool.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-blue-600 transition-colors">
+              <link href="#" className="text-gray-400 hover:text-blue-600 transition-colors">
                 <FaFacebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              </link>
+              <link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
                 <FaTwitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-pink-600 transition-colors">
+              </link>
+              <link href="#" className="text-gray-400 hover:text-pink-600 transition-colors">
                 <FaInstagram className="w-5 h-5" />
-              </a>
+              </link>
             </div>
           </div>
 
@@ -33,22 +33,22 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <a href="/" className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center">
+                <link href="/" className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center">
                   <span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>
                   Home
-                </a>
+                </link>
               </li>
               <li>
-                <a href="/calculator" className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center">
+                <link href="/calculator" className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center">
                   <span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>
                   BMI Calculator
-                </a>
+                </link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center">
+                <link href="#" className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center">
                   <span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>
                   Privacy Policy
-                </a>
+                </link>
               </li>
             </ul>
           </div>

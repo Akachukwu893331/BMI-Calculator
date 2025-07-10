@@ -4,7 +4,7 @@ type HealthTipsProps = {
   bmi: number;
   age: number;
   gender: 'male' | 'female';
-  bmiCategory?: string;
+  // bmiCategory?: string;
   bodyFatPercentage?: number;
 };
 

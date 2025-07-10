@@ -11,7 +11,6 @@ import {
   MessageSquareText,
   User,
   Gauge,
-  AlertTriangle,
   ChevronRight
 } from 'lucide-react';
 
