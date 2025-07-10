@@ -1,4 +1,3 @@
-// components/AboutSection.tsx
 'use client';
 
 import { motion } from 'framer-motion';
@@ -46,8 +45,8 @@ export default function AboutSection() {
               className="prose prose-lg text-gray-600 max-w-3xl"
             >
               <p>
-                Body Mass Index (BMI) is a simple calculation using a person's height and weight. The
-                formula is <span className="font-semibold text-gray-800">BMI = kg/m<sup>2</sup></span> where kg is a person's weight in kilograms and m<sup>2</sup> is
+                Body Mass Index (BMI) is a simple calculation using a person&apos;s height and weight. The
+                formula is <span className="font-semibold text-gray-800">BMI = kg/m<sup>2</sup></span> where kg is a person&apos;s weight in kilograms and m<sup>2</sup> is
                 their height in meters squared.
               </p>
               <p>
@@ -67,7 +66,7 @@ export default function AboutSection() {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">BMI Categories</h3>
               <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden">
                 <div className="h-full flex">
-                  <div className="bg-blue-500 w-1/6" title="Underweight (<18.5)"></div>
+                  <div className="bg-blue-500 w-1/6" title="Underweight (&lt;18.5)"></div>
                   <div className="bg-green-500 w-4/6" title="Normal (18.5-24.9)"></div>
                   <div className="bg-yellow-500 w-1/6" title="Overweight (25-29.9)"></div>
                   <div className="bg-red-500 w-1/6" title="Obese (≥30)"></div>
@@ -120,7 +119,7 @@ export default function AboutSection() {
                 <AlertCircle className="w-6 h-6" />
               </div>
               <h3 className="font-semibold mb-2">Limitations</h3>
-              <p className="text-sm text-white/90">BMI doesn't account for muscle mass, bone density, or fat distribution.</p>
+              <p className="text-sm text-white/90">BMI doesn&apos;t account for muscle mass, bone density, or fat distribution.</p>
             </div>
           </motion.div>
         </div>
@@ -136,7 +135,7 @@ export default function AboutSection() {
           <div className="max-w-4xl mx-auto text-center">
             <h3 className="text-2xl font-bold text-indigo-900 mb-4">BMI is just one measure</h3>
             <p className="text-indigo-800">
-              While BMI is a useful screening tool, it's not diagnostic of body fatness or health. 
+              While BMI is a useful screening tool, it&apos;s not diagnostic of body fatness or health. 
               Consider waist circumference, body composition, and other health markers for a complete picture. 
               Always consult with a healthcare provider for health assessments.
             </p>

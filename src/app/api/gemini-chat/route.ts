@@ -23,13 +23,16 @@ import { NextRequest } from 'next/server';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    let messages = (body.messages as { role: 'user' | 'assistant'; content: string }[])
-      .filter(msg => !!msg.content?.trim());
-
-    const prompt = body.prompt;
+    const messages = (body.messages as ChatMessage[]).filter(m => !!m.content?.trim());
+    const prompt: string = body.prompt;
 
     const firstUserIndex = messages.findIndex(m => m.role === 'user');
     if (firstUserIndex === -1) {
@@ -39,19 +42,17 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    messages = messages.slice(firstUserIndex);
-
-    if (messages[0].role !== 'user') {
+    const validMessages = messages.slice(firstUserIndex);
+    if (validMessages[0].role !== 'user') {
       return new Response(JSON.stringify({ error: 'First message must be from user.' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // ✅ Convert to Gemini-compatible format
-    const geminiHistory = messages.map(msg => ({
+    const geminiHistory = validMessages.map(msg => ({
       role: msg.role === 'assistant' ? 'model' : 'user',
-      parts: [msg.content],
+      parts: [{ text: msg.content }],
     }));
 
     console.log('🔍 Gemini Chat History Sent:', geminiHistory);
@@ -60,10 +61,9 @@ export async function POST(req: NextRequest) {
 
     const chat = model.startChat({ history: geminiHistory });
 
-    // ✅ Send prompt as { parts: [...] }
-    const result = await chat.sendMessage({ parts: [prompt] });
+    // ✅ Correct: use string directly as prompt
+    const result = await chat.sendMessage(prompt);
 
-    // ✅ Extract response safely
     const responseText = result.response.text();
 
     return new Response(JSON.stringify({ content: responseText }), {
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
       headers: { 'Content-Type': 'application/json' },
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Gemini API Route Error:', error);
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
       status: 500,
@@ -79,3 +79,4 @@ export async function POST(req: NextRequest) {
     });
   }
 }
+

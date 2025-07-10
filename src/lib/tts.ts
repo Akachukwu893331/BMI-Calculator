@@ -1,9 +1,17 @@
-export function speak(text: string) {
-  if (typeof window === 'undefined') return
+export async function speak(text: string): Promise<void> {
+  if (!window.speechSynthesis) {
+    console.warn('Text-to-speech is not supported in this browser.');
+    return;
+  }
 
-  const synth = window.speechSynthesis
-  const utter = new SpeechSynthesisUtterance(text)
-  utter.lang = 'en-US'
-  utter.rate = 1
-  synth.speak(utter)
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  utterance.rate = 1;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+
+  return new Promise((resolve) => {
+    utterance.onend = () => resolve();
+    window.speechSynthesis.speak(utterance);
+  });
 }

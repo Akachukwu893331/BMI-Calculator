@@ -1,7 +1,7 @@
 // src/components/about/ProjectShowcase.tsx
 import Image from 'next/image';
 import { FiExternalLink, FiGithub } from 'react-icons/fi';
-import { FaReact, FaNodeJs, FaFigma } from 'react-icons/fa';
+import { FaReact, FaFigma } from 'react-icons/fa';
 import { SiNextdotjs, SiTailwindcss, SiTypescript } from 'react-icons/si';
 
 export default function ProjectShowcase() {
@@ -106,7 +106,7 @@ export default function ProjectShowcase() {
         <div className="relative group">
           <div className="relative aspect-video rounded-xl overflow-hidden shadow-lg border border-gray-200 transform transition-all group-hover:shadow-xl">
             <Image
-              src="/images/bmi-screenshot.png"
+              src="/bmi-calculator.png"
               alt="BMI Calculator Interface"
               fill
               className="object-cover"

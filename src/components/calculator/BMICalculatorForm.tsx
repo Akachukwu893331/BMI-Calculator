@@ -442,16 +442,16 @@ export default function BMICalculatorForm({
         <div className="p-6">
           <div className="flex items-center mb-4">
             <div className="flex-shrink-0">
-              <svg className="h-6 w-6 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div className="ml-4">
-              <h3 className="text-lg font-medium text-red-100">Inactivity Detected</h3>
+              <h3 className="text-lg font-medium text-red-500">Inactivity Detected</h3>
             </div>
           </div>
           <div className="mt-2">
-            <p className="text-sm text-gray-100">
+            <p className="text-sm text-gray-900">
               You've been inactive for 30 seconds. Would you like to refresh the form to start over?
             </p>
           </div>

@@ -4,11 +4,10 @@ type HealthTipsProps = {
   bmi: number;
   age: number;
   gender: 'male' | 'female';
-  // bmiCategory?: string;
   bodyFatPercentage?: number;
 };
 
-export default function HealthTips({ bmi, age, gender, bmiCategory, bodyFatPercentage }: HealthTipsProps) {
+export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: HealthTipsProps) {
   if (!bmi) return null;
 
   // Adjust BMI for older adults (consistent with BMIResult component)

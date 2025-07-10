@@ -1,5 +1,14 @@
-// components/Footer.tsx
-import { FaHeartbeat, FaPhoneAlt, FaEnvelope, FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+'use client';
+
+import Link from 'next/link';
+import {
+  FaHeartbeat,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+} from 'react-icons/fa';
 
 export default function Footer() {
   return (
@@ -9,22 +18,34 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="space-y-4">
             <div className="flex items-center">
-              <FaHeartbeat className="text-red-500 text-2xl mr-2" />
+              <FaHeartbeat className="text-blue-500 text-2xl mr-2" />
               <h3 className="text-xl font-bold text-gray-800">HealthMetrics</h3>
             </div>
             <p className="text-gray-600 leading-relaxed">
               Your comprehensive health tracking and BMI calculation tool.
             </p>
             <div className="flex space-x-4">
-              <link href="#" className="text-gray-400 hover:text-blue-600 transition-colors">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-blue-600 transition-colors"
+                aria-label="Facebook"
+              >
                 <FaFacebook className="w-5 h-5" />
-              </link>
-              <link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              </a>
+              <a
+                href="#"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+                aria-label="Twitter"
+              >
                 <FaTwitter className="w-5 h-5" />
-              </link>
-              <link href="#" className="text-gray-400 hover:text-pink-600 transition-colors">
+              </a>
+              <a
+                href="#"
+                className="text-gray-400 hover:text-pink-600 transition-colors"
+                aria-label="Instagram"
+              >
                 <FaInstagram className="w-5 h-5" />
-              </link>
+              </a>
             </div>
           </div>
 
@@ -33,22 +54,31 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <link href="/" className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center">
+                <Link
+                  href="/"
+                  className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center"
+                >
                   <span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>
                   Home
-                </link>
+                </Link>
               </li>
               <li>
-                <link href="/calculator" className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center">
+                <Link
+                  href="/calculator"
+                  className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center"
+                >
                   <span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>
                   BMI Calculator
-                </link>
+                </Link>
               </li>
               <li>
-                <link href="#" className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center">
+                <a
+                  href="#"
+                  className="text-gray-600 hover:text-indigo-600 transition-colors flex items-center"
+                >
                   <span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>
                   Privacy Policy
-                </link>
+                </a>
               </li>
             </ul>
           </div>

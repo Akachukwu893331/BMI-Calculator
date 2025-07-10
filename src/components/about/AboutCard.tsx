@@ -1,7 +1,6 @@
 // src/components/about/ProfileCard.tsx
 import Image from 'next/image';
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
-import { SiLeetcode } from 'react-icons/si';
 
 export default function ProfileCard() {
   return (

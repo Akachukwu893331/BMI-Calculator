@@ -9,14 +9,14 @@ import { IoMdNutrition } from 'react-icons/io';
 import { FaRunning, FaWeight } from 'react-icons/fa';
 import { MdHealthAndSafety } from 'react-icons/md';
 
-type Message = {
+interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
-};
+}
 
-type Props = {
+interface Props {
   bmiData?: {
     bmi: number;
     height: number;
@@ -25,18 +25,17 @@ type Props = {
     gender: 'male' | 'female';
     units: 'metric' | 'imperial';
   } | null;
-};
+}
 
 export default function AIAssistant({ bmiData }: Props) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<'chat' | 'health'>('chat');
 
   const getBMICategory = (bmi: number, age: number) => {
-    let adjustedBMI = age > 65 ? bmi * 0.95 : bmi;
+    const adjustedBMI = age > 65 ? bmi * 0.95 : bmi;
     if (adjustedBMI < 16) return 'Severe Thinness';
     if (adjustedBMI < 17) return 'Moderate Thinness';
     if (adjustedBMI < 18.5) return 'Mild Thinness';
@@ -81,7 +80,6 @@ export default function AIAssistant({ bmiData }: Props) {
 
       setMessages(prev => [...prev, assistantMessage]);
       await speak(response);
-      setIsSpeaking(true);
     } catch (error) {
       console.error('Failed to get response:', error);
     } finally {
@@ -128,164 +126,75 @@ export default function AIAssistant({ bmiData }: Props) {
 
   return (
     <div className="flex flex-col h-full bg-gray-50 rounded-xl shadow-sm overflow-hidden">
-      <div className="bg-white border-b">
-        <div className="flex">
-          <button
-            className={`flex-1 py-3 font-medium text-sm ${activeTab === 'chat' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-            onClick={() => setActiveTab('chat')}
-          >
-            Chat
-          </button>
-          {bmiData && (
-            <button
-              className={`flex-1 py-3 font-medium text-sm ${activeTab === 'health' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-              onClick={() => setActiveTab('health')}
-            >
-              Health Summary
-            </button>
-          )}
-        </div>
+      <div className="flex items-center border-b border-gray-200">
+        <button
+          onClick={() => setActiveTab('chat')}
+          className={`w-1/2 py-3 text-sm font-medium ${activeTab === 'chat' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500'}`}
+        >
+          Chat
+        </button>
+        <button
+          onClick={() => setActiveTab('health')}
+          className={`w-1/2 py-3 text-sm font-medium ${activeTab === 'health' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500'}`}
+        >
+          Summary
+        </button>
       </div>
 
-      <div className="flex-1 flex flex-col">
-        {activeTab === 'health' && bmiData ? (
-          <div className="p-6 space-y-6">
-            {/* BMI Ring */}
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 text-center">
-              <div className="flex justify-center items-center space-x-4">
-                <div className="relative w-24 h-24">
-                  <svg className="w-full h-full" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" strokeWidth="8" />
-                    <circle
-                      cx="50" cy="50" r="45"
-                      fill="none"
-                      stroke={getBMIColor(bmiData.bmi)}
-                      strokeWidth="8"
-                      strokeDasharray={`${(Math.min(bmiData.bmi, 40) / 40) * 282.6} 282.6`}
-                      strokeLinecap="round"
-                      transform="rotate(-90 50 50)"
-                    />
-                    <text x="50" y="50" textAnchor="middle" dominantBaseline="middle" className="text-2xl font-bold fill-gray-800">
-                      {bmiData.bmi.toFixed(1)}
-                    </text>
-                  </svg>
-                </div>
-                <div className="text-left">
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    {getBMICategory(bmiData.bmi, bmiData.age)}
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    {bmiData.age} years • {bmiData.gender}
-                  </p>
-                </div>
-              </div>
+      {activeTab === 'chat' ? (
+        <div className="flex flex-col flex-grow overflow-y-auto px-4 py-2 space-y-4" ref={chatContainerRef}>
+          {messages.map((msg) => (
+            <div key={msg.id} className={`max-w-md px-4 py-2 rounded-lg ${msg.role === 'user' ? 'ml-auto bg-indigo-100 text-gray-800' : 'mr-auto bg-white border text-gray-700'}`}>
+              {msg.content}
             </div>
+          ))}
+        </div>
+      ) : (
+        <div className="p-6 text-sm text-gray-600 space-y-3">
+          {bmiData ? (
+            <>
+              <div><strong>BMI:</strong> {bmiData.bmi.toFixed(1)} (<span style={{ color: getBMIColor(bmiData.bmi) }}>{getBMICategory(bmiData.bmi, bmiData.age)}</span>)</div>
+              <div><strong>Age:</strong> {bmiData.age}</div>
+              <div><strong>Gender:</strong> {bmiData.gender}</div>
+              <div><strong>Height:</strong> {bmiData.height} {bmiData.units === 'metric' ? 'cm' : 'in'}</div>
+              <div><strong>Weight:</strong> {bmiData.weight} {bmiData.units === 'metric' ? 'kg' : 'lbs'}</div>
+            </>
+          ) : (
+            <div>No BMI data available.</div>
+          )}
+        </div>
+      )}
 
-            {/* Height & Weight */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white p-4 rounded-lg shadow-xs">
-                <h4 className="text-xs font-medium text-gray-500 mb-1">Height</h4>
-                <p className="text-lg font-semibold">
-                  {bmiData.units === 'metric'
-                    ? `${bmiData.height} cm`
-                    : `${Math.floor(bmiData.height / 12)} ft ${Math.round(bmiData.height % 12)} in`}
-                </p>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-xs">
-                <h4 className="text-xs font-medium text-gray-500 mb-1">Weight</h4>
-                <p className="text-lg font-semibold">
-                  {bmiData.units === 'metric'
-                    ? `${bmiData.weight} kg`
-                    : `${bmiData.weight} lbs`}
-                </p>
-              </div>
-            </div>
-
-            {/* Tips */}
-            <div className="bg-white p-4 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">Recommendations</h4>
-              <ul className="space-y-2 text-sm text-gray-600">
-                {bmiData.bmi < 18.5 && (
-                  <>
-                    <li><span className="text-green-500 mr-2">•</span> Increase calorie intake with nutrient-dense foods</li>
-                    <li><span className="text-green-500 mr-2">•</span> Strength training to build muscle mass</li>
-                  </>
-                )}
-                {bmiData.bmi >= 18.5 && bmiData.bmi < 25 && (
-                  <>
-                    <li><span className="text-green-500 mr-2">•</span> Maintain current healthy habits</li>
-                    <li><span className="text-green-500 mr-2">•</span> Regular physical activity (150+ mins/week)</li>
-                  </>
-                )}
-                {bmiData.bmi >= 25 && (
-                  <>
-                    <li><span className="text-green-500 mr-2">•</span> Moderate calorie reduction</li>
-                    <li><span className="text-green-500 mr-2">•</span> Increase aerobic exercise</li>
-                  </>
-                )}
-              </ul>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map(msg => (
-                <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-xs md:max-w-md rounded-lg px-4 py-2 ${msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800'}`}>
-                    <p className="text-sm">{msg.content}</p>
-                    <p className="text-xs mt-1 opacity-70 text-right">{msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                  </div>
-                </div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-gray-100 text-gray-800 rounded-lg px-4 py-2 max-w-xs">
-                    <div className="flex space-x-2">
-                      <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce"></div>
-                      <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce delay-200"></div>
-                      <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce delay-400"></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Quick Prompts */}
-            {messages.length <= 1 && (
-              <div className="px-4 pb-2 grid grid-cols-2 gap-2">
-                {quickPrompts.map((p, i) => (
-                  <button key={i} className="bg-white border rounded-lg p-3 text-xs flex items-center hover:bg-gray-50" onClick={() => setInput(p.text)}>
-                    <span className="mr-2">{p.icon}</span>{p.text}
-                  </button>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-
-        {/* Input Section */}
-        <div className="border-t bg-white p-4">
-          <div className="relative flex items-center">
-            <input
-              className="flex-1 border rounded-full py-3 pl-4 pr-12 focus:outline-none"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Ask about health, nutrition, exercise..."
-              disabled={isLoading}
-            />
-            <div className="absolute right-2 flex space-x-1">
-              <VoiceRecorder onResult={handleVoiceResult} disabled={isLoading} className="p-2 text-gray-500 hover:text-blue-600" />
-              <button
-                className={`p-2 rounded-full ${!input.trim() || isLoading ? 'text-gray-400' : 'text-white bg-blue-600 hover:bg-blue-700'}`}
-                onClick={sendMessage}
-                disabled={!input.trim() || isLoading}
-              >
-                {isLoading ? <div className="animate-spin h-5 w-5 border-b-2 border-white rounded-full" /> : <FiSend size={18} />}
-              </button>
-            </div>
-          </div>
-          <p className="text-xs text-gray-500 mt-2 text-center">Health Assistant provides general information only. Consult a healthcare professional.</p>
+      <div className="px-4 py-2 border-t border-gray-200 bg-white">
+        <div className="flex flex-wrap gap-2 mb-2">
+          {quickPrompts.map((prompt, index) => (
+            <button
+              key={index}
+              onClick={() => setInput(prompt.text)}
+              className="flex items-center gap-1 text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-full hover:bg-gray-200"
+            >
+              {prompt.icon} {prompt.text}
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-2">
+          <VoiceRecorder onResult={handleVoiceResult} disabled={isLoading} className="w-10 h-10" />
+          <textarea
+            rows={1}
+            className="flex-grow resize-none border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Type a message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={isLoading}
+          />
+          <button
+            onClick={sendMessage}
+            className="p-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg disabled:opacity-50"
+            disabled={isLoading}
+          >
+            <FiSend className="w-5 h-5" />
+          </button>
         </div>
       </div>
     </div>
