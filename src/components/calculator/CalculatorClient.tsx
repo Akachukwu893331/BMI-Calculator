@@ -172,8 +172,12 @@ const getBMICategory = (bmi: number, age: number) => {
   return { category: 'Obese Class III', color: 'bg-red-700' };
 };
 
-const calculateBodyFat = (bmi: number, age: number, gender: Gender) => {
-  if (!bmi || !age) return null;
+const calculateBodyFat = (
+  bmi: number,
+  age: number,
+  gender: Gender
+): number | undefined => {
+  if (!bmi || !age) return undefined;
   return gender === 'male'
     ? 1.2 * bmi + 0.23 * age - 16.2
     : 1.2 * bmi + 0.23 * age - 5.4;

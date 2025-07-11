@@ -5,6 +5,7 @@ type HealthTipsProps = {
   age: number;
   gender: 'male' | 'female';
   bodyFatPercentage?: number;
+  bmiCategory?: string;
 };
 
 export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: HealthTipsProps) {
