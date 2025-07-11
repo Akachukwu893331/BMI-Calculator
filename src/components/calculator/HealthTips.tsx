@@ -162,13 +162,6 @@ export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: Heal
   const ageTips = getAgeSpecificTips();
   const genderTips = getGenderSpecificTips();
 
-  const allTips = [
-    ...categoryTips.tips,
-    ...bodyFatTips,
-    ...ageTips,
-    ...genderTips,
-  ];
-
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <div className="flex justify-between items-start mb-4">
