@@ -41,59 +41,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-// Add browser SpeechRecognition type definitions for TypeScript
-
 declare global {
   interface Window {
-    SpeechRecognition: typeof SpeechRecognition;
-    webkitSpeechRecognition: typeof SpeechRecognition;
-  }
-
-  interface SpeechRecognition extends EventTarget {
-    lang: string;
-    start(): void;
-    stop(): void;
-    abort(): void;
-    continuous: boolean;
-    interimResults: boolean;
-    maxAlternatives: number;
-    onaudioend?: (event: Event) => void;
-    onaudiostart?: (event: Event) => void;
-    onend?: (event: Event) => void;
-    onerror?: (event: SpeechRecognitionErrorEvent) => void;
-    onnomatch?: (event: SpeechRecognitionEvent) => void;
-    onresult?: (event: SpeechRecognitionEvent) => void;
-    onsoundend?: (event: Event) => void;
-    onsoundstart?: (event: Event) => void;
-    onspeechend?: (event: Event) => void;
-    onspeechstart?: (event: Event) => void;
-    onstart?: (event: Event) => void;
-  }
-
-  interface SpeechRecognitionErrorEvent extends Event {
-    error: string;
-    message: string;
-  }
-
-  interface SpeechRecognitionEvent extends Event {
-    readonly resultIndex: number;
-    readonly results: SpeechRecognitionResultList;
-  }
-
-  interface SpeechRecognitionResultList {
-    [index: number]: SpeechRecognitionResult;
-    length: number;
-  }
-
-  interface SpeechRecognitionResult {
-    [index: number]: SpeechRecognitionAlternative;
-    length: number;
-    isFinal: boolean;
-  }
-
-  interface SpeechRecognitionAlternative {
-    transcript: string;
-    confidence: number;
+    webkitSpeechRecognition: any;
+    SpeechRecognition: any;
   }
 }
 
@@ -108,13 +59,16 @@ export default function VoiceRecorder({ onResult, disabled = false, className = 
   const [isRecording, setIsRecording] = useState(false);
 
   useEffect(() => {
-    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    const SpeechRecognitionConstructor =
+      typeof window !== 'undefined' &&
+      (window.SpeechRecognition || window.webkitSpeechRecognition);
+
+    if (!SpeechRecognitionConstructor) {
       console.warn('Speech recognition not supported in this browser.');
       return;
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
+    const recognition: SpeechRecognition = new SpeechRecognitionConstructor();
 
     recognition.lang = 'en-US';
     recognition.interimResults = false;
@@ -161,3 +115,4 @@ export default function VoiceRecorder({ onResult, disabled = false, className = 
     </button>
   );
 }
+
