@@ -41,12 +41,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-declare global {
-  interface Window {
-    webkitSpeechRecognition: any;
-    SpeechRecognition: any;
-  }
-}
+// Safe fallback type check for browsers
+type SpeechRecognitionConstructor = new () => SpeechRecognition;
 
 interface VoiceRecorderProps {
   onResult: (text: string) => void;
@@ -54,22 +50,26 @@ interface VoiceRecorderProps {
   className?: string;
 }
 
-export default function VoiceRecorder({ onResult, disabled = false, className = '' }: VoiceRecorderProps) {
+export default function VoiceRecorder({
+  onResult,
+  disabled = false,
+  className = '',
+}: VoiceRecorderProps) {
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const [isRecording, setIsRecording] = useState(false);
 
   useEffect(() => {
-    const SpeechRecognitionConstructor =
-      typeof window !== 'undefined' &&
-      (window.SpeechRecognition || window.webkitSpeechRecognition);
+    const SpeechRecognitionImpl: SpeechRecognitionConstructor | undefined =
+      typeof window !== 'undefined'
+        ? (window.SpeechRecognition || window.webkitSpeechRecognition)
+        : undefined;
 
-    if (!SpeechRecognitionConstructor) {
-      console.warn('Speech recognition not supported in this browser.');
+    if (!SpeechRecognitionImpl) {
+      console.warn('Speech recognition is not supported in this browser.');
       return;
     }
 
-    const recognition: SpeechRecognition = new SpeechRecognitionConstructor();
-
+    const recognition = new SpeechRecognitionImpl();
     recognition.lang = 'en-US';
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
@@ -108,11 +108,12 @@ export default function VoiceRecorder({ onResult, disabled = false, className = 
       type="button"
       onClick={toggleRecording}
       disabled={disabled}
-      className={`rounded-full border p-2 text-sm ${isRecording ? 'bg-red-500 text-white' : 'bg-gray-200'} ${className}`}
+      className={`rounded-full border p-2 text-sm ${
+        isRecording ? 'bg-red-500 text-white' : 'bg-gray-200'
+      } ${className}`}
       title={isRecording ? 'Stop Recording' : 'Start Recording'}
     >
       🎙️
     </button>
   );
 }
-

@@ -1,13 +1,10 @@
-// src/types/speech.d.ts (recommended location)
+// Manually add Web Speech API types
 
 declare global {
   interface Window {
-    webkitSpeechRecognition: any;
-    SpeechRecognition: any;
+    webkitSpeechRecognition?: typeof SpeechRecognition;
+    SpeechRecognition?: typeof SpeechRecognition;
   }
-
-  var webkitSpeechRecognition: any;
-  var SpeechRecognition: any;
 
   interface SpeechRecognition extends EventTarget {
     lang: string;
