@@ -459,11 +459,11 @@ export default function BMICalculatorForm({
             <button
               onClick={() => {
                 setShowRefreshPrompt(false);
-                setAutoRefreshNotice('Form will auto-refresh in 2 minute.');
+                setAutoRefreshNotice('Form will auto-refresh in 10 minute.');
                 const timeout = setTimeout(() => {
                   refreshForm();
                   setAutoRefreshNotice('');
-                }, 12000);
+                }, 600000);
                 setRefreshTimeout(timeout);
               }}
               className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm transition-colors"
