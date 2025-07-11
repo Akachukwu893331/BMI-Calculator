@@ -32,8 +32,6 @@ export async function POST(req: NextRequest) {
       parts: { text: string }[];
     }[];
 
-    const context = body.context; // optional: bmi, age, etc.
-
     if (!history?.length) {
       return new Response(JSON.stringify({ error: 'No history provided.' }), {
         status: 400,
@@ -65,4 +63,3 @@ export async function POST(req: NextRequest) {
     });
   }
 }
-
