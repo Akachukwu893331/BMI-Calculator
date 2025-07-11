@@ -8,6 +8,7 @@ import { FiSend } from 'react-icons/fi';
 import { IoMdNutrition } from 'react-icons/io';
 import { FaRunning, FaWeight } from 'react-icons/fa';
 import { MdHealthAndSafety } from 'react-icons/md';
+import { GeminiHistory } from '@/types/gemini'; // ✅ import GeminiHistory
 
 interface Message {
   id: string;
@@ -69,7 +70,14 @@ export default function AIAssistant({ bmiData }: Props) {
     setIsLoading(true);
 
     try {
-      const response = await streamChat([...messages, userMessage], bmiData);
+      // ✅ Format messages for Gemini
+      const geminiMessages: GeminiHistory[] = [...messages, userMessage].map((msg) => ({
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: msg.content }],
+      }));
+
+      // ✅ Handle nullable bmiData
+      const response = await streamChat(geminiMessages, bmiData ?? undefined);
 
       const assistantMessage: Message = {
         id: Date.now().toString(),

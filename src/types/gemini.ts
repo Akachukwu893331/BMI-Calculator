@@ -1,8 +1,9 @@
-// src/types/gemini.ts
+// /types/gemini.ts
 
-export interface GeminiMessage {
+
+
+// /types/gemini.ts ✅ FIXED
+export interface GeminiHistory {
   role: 'user' | 'model';
   parts: { text: string }[];
 }
-
-export type GeminiHistory = GeminiMessage[];
