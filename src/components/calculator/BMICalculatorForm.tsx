@@ -452,7 +452,7 @@ export default function BMICalculatorForm({
           </div>
           <div className="mt-2">
             <p className="text-sm text-gray-900">
-              You've been inactive for 30 seconds. Would you like to refresh the form to start over?
+              You&apos;ve been inactive for 30 seconds. Would you like to refresh the form to start over?
             </p>
           </div>
           <div className="mt-5 sm:mt-6 grid grid-cols-2 gap-3">

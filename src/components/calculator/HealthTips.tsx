@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 type HealthTipsProps = {
   bmi: number;
@@ -10,7 +10,6 @@ type HealthTipsProps = {
 export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: HealthTipsProps) {
   if (!bmi) return null;
 
-  // Adjust BMI for older adults (consistent with BMIResult component)
   const adjustedBMI = age > 65 ? bmi * 0.95 : bmi;
 
   const getCategoryTips = () => {
@@ -107,7 +106,7 @@ export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: Heal
 
   const getBodyFatTips = () => {
     if (!bodyFatPercentage) return [];
-    
+
     if (gender === 'male') {
       if (bodyFatPercentage < 6) return ['Ensure adequate essential fat intake'];
       if (bodyFatPercentage < 14) return ['Maintain current fitness routine'];
@@ -125,7 +124,7 @@ export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: Heal
 
   const getAgeSpecificTips = () => {
     const tips: string[] = [];
-    
+
     if (age >= 65) {
       tips.push(
         'Include resistance training 2-3 times weekly to combat sarcopenia',
@@ -149,12 +148,12 @@ export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: Heal
       ? [
           'Ensure adequate iron intake, especially if menstruating',
           'Include calcium-rich foods for bone health',
-          'Be mindful of hormonal changes affecting weight'
+          'Be mindful of hormonal changes affecting weight',
         ]
       : [
           'Monitor alcohol consumption as it affects abdominal fat',
           'Pay attention to heart health indicators',
-          'Men typically need more calories but watch portion sizes'
+          'Men typically need more calories but watch portion sizes',
         ];
   };
 
@@ -167,7 +166,7 @@ export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: Heal
     ...categoryTips.tips,
     ...bodyFatTips,
     ...ageTips,
-    ...genderTips
+    ...genderTips,
   ];
 
   return (
@@ -175,20 +174,30 @@ export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: Heal
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-xl font-semibold">Personalized Health Recommendations</h3>
         {categoryTips.urgency !== 'none' && (
-          <span className={`px-3 py-1 text-sm rounded-full text-white ${
-            categoryTips.urgency === 'critical' ? 'bg-red-700' :
-            categoryTips.urgency === 'high' ? 'bg-red-500' :
-            categoryTips.urgency === 'medium' ? 'bg-orange-500' : 'bg-yellow-500'
-          }`}>
-            {categoryTips.urgency === 'critical' ? 'Critical' :
-             categoryTips.urgency === 'high' ? 'High Priority' :
-             categoryTips.urgency === 'medium' ? 'Moderate Priority' : 'Mild Priority'}
+          <span
+            className={`px-3 py-1 text-sm rounded-full text-white ${
+              categoryTips.urgency === 'critical'
+                ? 'bg-red-700'
+                : categoryTips.urgency === 'high'
+                ? 'bg-red-500'
+                : categoryTips.urgency === 'medium'
+                ? 'bg-orange-500'
+                : 'bg-yellow-500'
+            }`}
+          >
+            {categoryTips.urgency === 'critical'
+              ? 'Critical'
+              : categoryTips.urgency === 'high'
+              ? 'High Priority'
+              : categoryTips.urgency === 'medium'
+              ? 'Moderate Priority'
+              : 'Mild Priority'}
           </span>
         )}
       </div>
-      
+
       <h4 className="text-lg font-medium mb-3">{categoryTips.title}</h4>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <h5 className="font-medium text-gray-800 mb-2">Primary Recommendations</h5>
@@ -200,7 +209,7 @@ export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: Heal
             ))}
           </ul>
         </div>
-        
+
         <div>
           {bodyFatTips.length > 0 && (
             <>
@@ -214,8 +223,10 @@ export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: Heal
               </ul>
             </>
           )}
-          
-          <h5 className="font-medium text-gray-800 mb-2">{gender === 'female' ? 'Women' : 'Men'}'s Health</h5>
+
+          <h5 className="font-medium text-gray-800 mb-2">
+            {gender === 'female' ? 'Women' : 'Men'}&rsquo;s Health
+          </h5>
           <ul className="list-disc pl-5 space-y-2">
             {genderTips.map((tip, index) => (
               <li key={`gender-${index}`} className="text-gray-700">
@@ -225,7 +236,7 @@ export default function HealthTips({ bmi, age, gender, bodyFatPercentage }: Heal
           </ul>
         </div>
       </div>
-      
+
       {ageTips.length > 0 && (
         <div className="mt-4 pt-4 border-t">
           <h5 className="font-medium text-gray-800 mb-2">Age-Specific Advice</h5>
